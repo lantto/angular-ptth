@@ -1,7 +1,7 @@
-ptth
+angular-ptth
 ====
 
-Angular $http service wrapper.
+$http service wrapper.
 
 # Basic usage
 
