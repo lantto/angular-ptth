@@ -50,6 +50,7 @@ module.provider('ptth', function() {
         createShortMethods(http, ['get', 'delete', 'head', 'jsonp', 'post', 'put', 'patch']);
 
         http.pendingRequests = $http.pendingRequests;
+        http.defaults = $http.defaults;
 
         return http;
     }];
