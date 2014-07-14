@@ -3,12 +3,17 @@
 var module = angular.module('ptth', []);
 
 module.provider('ptth', function() {
-    var baseUrl     = '', 
-        dataMethods = ['post', 'put', 'patch'],
+    var baseUrl         = '',
+        defaultParams   = {},
+        dataMethods     = ['post', 'put', 'patch'],
         _$http;
 
     this.setBaseUrl = function(url) {
         baseUrl = url;
+    }
+
+    this.setDefaultParams = function(params) {
+        defaultParams = params;
     }
 
     function prependUrl(url) {
@@ -29,6 +34,8 @@ module.provider('ptth', function() {
                         config = arguments[1] || {};
                     }
 
+                    buildParams(config);
+
                     config.method = method;
                     config.url = prependUrl(url);
 
@@ -38,11 +45,22 @@ module.provider('ptth', function() {
         };
     }
 
+    function buildParams(config) {
+        config.params = config.params || {};
+
+        for (var prop in defaultParams) {
+            if (defaultParams.hasOwnProperty(prop)) {
+                config.params[prop] = defaultParams[prop];
+            }
+        }
+    }
+
     this.$get = ['$http', function($http) {
         _$http = $http;
 
         var http = function (config) {
             config.url = prependUrl(config.url);
+            buildParams(config);
 
             return $http(config);
         };
